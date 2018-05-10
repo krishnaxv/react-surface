@@ -7,9 +7,7 @@
   "browser": "dist/react-surface.umd.js",
   "author": "krishnaxv",
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dist": "rollup -c",
     "prettier": "prettier --write 'src/**/*.js'",
@@ -38,7 +36,8 @@
     "rollup-plugin-uglify": "^3.0.0",
     "webpack": "^4.6.0"
   },
-  "dependencies": {
+  "dependencies": {},
+  "peerDependencies": {
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
