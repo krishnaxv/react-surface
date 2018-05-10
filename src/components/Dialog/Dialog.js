@@ -1,27 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Motion } from 'react-motion'
-import styled from 'styled-components'
 
 import { motion } from '../motion'
 
-// Container
-const Container = styled.div`
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  perspective: 1300px;
-  position: fixed;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 9999999;
-`
-
-// Wrapper
-const Wrapper = styled.div``
+import './style.css'
 
 /**
  * Dialog component
@@ -119,9 +102,9 @@ class Dialog extends Component {
     return (
       <Motion defaultStyle={childMotion.from} style={childMotion.to}>
         {value => (
-          <Wrapper style={childReducer(value)}>
+          <div className="dialog__wrapper" style={childReducer(value)}>
             {children(() => this.onCloseDialog())}
-          </Wrapper>
+          </div>
         )}
       </Motion>
     )
@@ -139,15 +122,16 @@ class Dialog extends Component {
     return (
       <Motion defaultStyle={backdropMotion.from} style={backdropMotion.to}>
         {value => (
-          <Container
-            innerRef={container => {
+          <div
+            className="dialog__container"
+            ref={container => {
               this.container = container
             }}
             onClick={e => this.onClickBackdrop(e)}
             style={backdropReducer(value)}
           >
             {this.getChildren(children)}
-          </Container>
+          </div>
         )}
       </Motion>
     )

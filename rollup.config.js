@@ -3,19 +3,18 @@ import babel from 'rollup-plugin-babel'
 import commonJS from 'rollup-plugin-commonjs'
 import resolve from 'rollup-plugin-node-resolve'
 import uglify from 'rollup-plugin-uglify'
+import postCSS from 'rollup-plugin-postcss'
 
 import pkg from './package.json'
 
 // Globals
 const globals = {
   react: 'React',
-  'prop-types': 'PropTypes',
-  'styled-components': 'styled',
-  lodash: 'lodash'
+  'prop-types': 'PropTypes'
 }
 
 // External
-const external = ['react', 'prop-types', 'styled-components', 'lodash']
+const external = ['react', 'prop-types']
 
 const config = {
   input: 'src/index.js',
@@ -39,6 +38,9 @@ const config = {
   ],
   plugins: [
     resolve(),
+    postCSS({
+      plugins: []
+    }),
     babel({
       exclude: 'node_modules/**'
     }),
