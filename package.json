@@ -1,13 +1,15 @@
 {
   "name": "@krishnaxv/react-surface",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Surface to render dialog/modal component.",
   "main": "dist/react-surface.cjs.js",
   "module": "dist/react-surface.esm.js",
   "browser": "dist/react-surface.umd.js",
   "author": "krishnaxv",
   "license": "MIT",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dist": "rollup -c",
     "prettier": "prettier --write 'src/**/*.js'",
