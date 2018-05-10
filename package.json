@@ -1,0 +1,44 @@
+{
+  "name": "@krishnaxv/react-surface",
+  "version": "0.0.0",
+  "description": "Surface to render dialog/modal component.",
+  "main": "dist/react-surface.cjs.js",
+  "module": "dist/react-surface.esm.js",
+  "browser": "dist/react-surface.umd.js",
+  "author": "krishnaxv",
+  "license": "MIT",
+  "files": ["dist"],
+  "scripts": {
+    "dist": "rollup -c",
+    "prettier": "prettier --write 'src/**/*.js'",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build",
+    "github:deploy": "git subtree push --prefix styleguide origin gh-pages",
+    "github:pre-tag": "yarn styleguide:build",
+    "github:post-tag": "yarn github:deploy && yarn npm:publish",
+    "npm:publish": "yarn dist && yarn publish"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "file-loader": "^1.1.11",
+    "prettier": "^1.12.1",
+    "react-styleguidist": "^7.0.8",
+    "rollup": "^0.58.1",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "webpack": "^4.6.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-motion": "^0.5.2",
+    "styled-components": "^3.2.6"
+  }
+}
