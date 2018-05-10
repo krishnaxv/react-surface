@@ -5,7 +5,7 @@ import { Modal } from '@krishnaxv/react-surface'
 Basic usage.
 
 ```jsx static
-<Modal />
+<Modal>{onCloseModal => <div>Modal</div>}</Modal>
 ```
 
 Customize it using built-in props.

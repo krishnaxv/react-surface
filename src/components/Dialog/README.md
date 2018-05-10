@@ -5,7 +5,7 @@ import { Dialog } from '@krishnaxv/react-surface'
 Basic usage.
 
 ```jsx static
-<Dialog />
+<Dialog>{onCloseDialog => <div>Dialog</div>}</Dialog>
 ```
 
 Customize it using built-in props.
