@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Motion } from 'react-motion'
 import styled from 'styled-components'
 
-import { motion } from '../'
+import { motion } from '../motion'
 
 // Container
 const Container = styled.div`
@@ -41,6 +41,7 @@ class Modal extends Component {
 
   static defaultProps = {
     closeOnBackdropClick: true,
+    motion: motion.fadeIn,
     showBackdrop: true,
     style: {}
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Motion } from 'react-motion'
 import styled from 'styled-components'
 
-import { motion } from '../'
+import { motion } from '../motion'
 
 // Container
 const Container = styled.div`
@@ -40,7 +40,8 @@ class Dialog extends Component {
   }
 
   static defaultProps = {
-    closeOnBackdropClick: true
+    closeOnBackdropClick: true,
+    motion: motion.fadeIn
   }
 
   // Default backdrop motion

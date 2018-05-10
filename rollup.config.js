@@ -1,5 +1,6 @@
 // Rollup plugins
 import babel from 'rollup-plugin-babel'
+import commonJS from 'rollup-plugin-commonjs'
 import resolve from 'rollup-plugin-node-resolve'
 import uglify from 'rollup-plugin-uglify'
 
@@ -41,6 +42,7 @@ const config = {
     babel({
       exclude: 'node_modules/**'
     }),
+    commonJS(),
     process.env.NODE_ENV === 'production' && uglify()
   ],
   external
