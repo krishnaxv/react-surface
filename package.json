@@ -1,6 +1,6 @@
 {
   "name": "@krishnaxv/react-surface",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Surface to render dialog/modal component.",
   "main": "dist/react-surface.cjs.js",
   "module": "dist/react-surface.esm.js",
