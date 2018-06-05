@@ -6,6 +6,9 @@ import { motion } from '../motion'
 
 import './style.css'
 
+// Set document body as default parent
+const defaultParent = document.querySelector('body')
+
 /**
  * Dialog component
  * Dialog component will always be displayed at the center of the screen.
@@ -19,11 +22,14 @@ class Dialog extends Component {
     /** Motion animation. */
     motion: PropTypes.object,
     /** Dialog close event listener callback. */
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    /** Hide scrollbar of parent element (defaults to document's body). */
+    hideScroll: PropTypes.bool
   }
 
   static defaultProps = {
     closeOnBackdropClick: true,
+    hideScroll: true,
     motion: motion.fadeIn
   }
 
@@ -108,6 +114,16 @@ class Dialog extends Component {
         )}
       </Motion>
     )
+  }
+
+  componentDidMount() {
+    // Hide scrollbar
+    defaultParent.classList.add('hide-scroll')
+  }
+
+  componentWillUnmount() {
+    // Show scrollbar
+    defaultParent.classList.remove('hide-scroll')
   }
 
   render() {

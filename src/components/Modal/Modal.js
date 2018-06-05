@@ -6,6 +6,9 @@ import { motion } from '../motion'
 
 import './style.css'
 
+// Set document body as default parent
+const defaultParent = document.querySelector('body')
+
 /**
  * Modal component
  * @class Modal
@@ -19,6 +22,8 @@ class Modal extends Component {
     motion: PropTypes.object,
     /** Modal close event listener callback. */
     onClose: PropTypes.func,
+    /** Hide scrollbar of parent element (defaults to document's body). */
+    hideScroll: PropTypes.bool,
     /** Whether to show modal backdrop. */
     showBackdrop: PropTypes.bool,
     /** Additional style for the modal surface. This can be used to position modal anywhere on the surface. */
@@ -27,6 +32,7 @@ class Modal extends Component {
 
   static defaultProps = {
     closeOnBackdropClick: true,
+    hideScroll: true,
     motion: motion.fadeIn,
     showBackdrop: true,
     style: {}
@@ -116,6 +122,20 @@ class Modal extends Component {
         )}
       </Motion>
     )
+  }
+
+  componentDidMount() {
+    if (this.props.hideScroll) {
+      // Hide scrollbar
+      defaultParent.classList.add('hide-scroll')
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.hideScroll) {
+      // Show scrollbar
+      defaultParent.classList.remove('hide-scroll')
+    }
   }
 
   render() {
