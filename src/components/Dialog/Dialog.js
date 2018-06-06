@@ -87,6 +87,11 @@ class Dialog extends Component {
       renderComponent: false
     })
 
+    // Before component unmount, add parent's scrollbar
+    if (this.props.hideScroll) {
+      this.toggleScroll(false)
+    }
+
     // Close callback
     if (this.props.onClose) {
       this.props.onClose()
@@ -116,14 +121,30 @@ class Dialog extends Component {
     )
   }
 
+  /**
+   * Toggle parent's scrollbar
+   * @param {boolean} hideScroll Hide scrollbar
+   * @memberof Dialog
+   */
+  toggleScroll(hideScroll) {
+    // Show/hide scrollbar
+    hideScroll
+      ? defaultParent.classList.add('hide-scroll')
+      : defaultParent.classList.remove('hide-scroll')
+  }
+
   componentDidMount() {
-    // Hide scrollbar
-    defaultParent.classList.add('hide-scroll')
+    if (this.props.hideScroll) {
+      // Hide scrollbar
+      this.toggleScroll(true)
+    }
   }
 
   componentWillUnmount() {
-    // Show scrollbar
-    defaultParent.classList.remove('hide-scroll')
+    if (this.props.hideScroll) {
+      // Show scrollbar
+      this.toggleScroll(false)
+    }
   }
 
   render() {

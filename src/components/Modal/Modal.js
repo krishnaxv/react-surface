@@ -91,6 +91,11 @@ class Modal extends Component {
       renderComponent: false
     })
 
+    // Before component unmount, add parent's scrollbar
+    if (this.props.hideScroll) {
+      this.toggleScroll(false)
+    }
+
     // Close callback
     if (this.props.onClose) {
       this.props.onClose()
@@ -124,17 +129,29 @@ class Modal extends Component {
     )
   }
 
+  /**
+   * Toggle parent's scrollbar
+   * @param {boolean} hideScroll Hide scrollbar
+   * @memberof Dialog
+   */
+  toggleScroll(hideScroll) {
+    // Show/hide scrollbar
+    hideScroll
+      ? defaultParent.classList.add('hide-scroll')
+      : defaultParent.classList.remove('hide-scroll')
+  }
+
   componentDidMount() {
     if (this.props.hideScroll) {
       // Hide scrollbar
-      defaultParent.classList.add('hide-scroll')
+      this.toggleScroll(true)
     }
   }
 
   componentWillUnmount() {
     if (this.props.hideScroll) {
       // Show scrollbar
-      defaultParent.classList.remove('hide-scroll')
+      this.toggleScroll(false)
     }
   }
 
