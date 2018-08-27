@@ -1,8 +1,8 @@
 module.exports = {
   title: 'React Surface',
   components: 'src/**/[A-Z]*.js',
-  showCode: true,
-  showUsage: true,
+  exampleMode: 'expand',
+  usageMode: 'expand',
   webpackConfig: {
     module: {
       rules: [
