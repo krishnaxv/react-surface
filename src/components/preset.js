@@ -1,5 +1,3 @@
-import { spring, presets } from 'react-motion'
-
 // Fade In motion
 const fadeIn = {
   config: {
@@ -8,7 +6,7 @@ const fadeIn = {
         opacity: 0
       },
       to: {
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        opacity: 1
       }
     },
     exit: {
@@ -16,7 +14,7 @@ const fadeIn = {
         opacity: 1
       },
       to: {
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        opacity: 0
       }
     }
   },
@@ -34,8 +32,8 @@ const fadeInScale = {
         opacity: 0.5
       },
       to: {
-        scale: spring(1, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        scale: 1,
+        opacity: 1
       }
     },
     exit: {
@@ -44,8 +42,8 @@ const fadeInScale = {
         opacity: 1
       },
       to: {
-        scale: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        scale: 0,
+        opacity: 0
       }
     }
   },
@@ -64,8 +62,8 @@ const fall = {
         opacity: 0
       },
       to: {
-        scale: spring(1, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        scale: 1,
+        opacity: 1
       }
     },
     exit: {
@@ -74,8 +72,8 @@ const fall = {
         opacity: 1
       },
       to: {
-        scale: spring(1.5, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        scale: 1.5,
+        opacity: 0
       }
     }
   },
@@ -96,10 +94,10 @@ const sideFall = {
         opacity: 0
       },
       to: {
-        translate: spring(0, { ...presets.gentle, precision: 0.1 }),
-        translateZ: spring(0, { ...presets.gentle, precision: 0.1 }),
-        rotate: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        translate: 0,
+        translateZ: 0,
+        rotate: 0,
+        opacity: 1
       }
     },
     exit: {
@@ -110,10 +108,10 @@ const sideFall = {
         opacity: 1
       },
       to: {
-        translate: spring(60, { ...presets.gentle, precision: 0.1 }),
-        translateZ: spring(300, { ...presets.gentle, precision: 0.1 }),
-        rotate: spring(45, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        translate: 60,
+        translateZ: 300,
+        rotate: 45,
+        opacity: 0
       }
     }
   },
@@ -121,7 +119,7 @@ const sideFall = {
     transformStyle: 'preserve-3d',
     transform: `translate(${value.translate}%) translateZ(${
       value.translateZ
-    }px) rotate(${value.rotate}deg)`,
+      }px) rotate(${value.rotate}deg)`,
     opacity: value.opacity
   })
 }
@@ -135,8 +133,8 @@ const slideInTop = {
         opacity: 0
       },
       to: {
-        translateY: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        translateY: 0,
+        opacity: 1
       }
     },
     exit: {
@@ -145,8 +143,8 @@ const slideInTop = {
         opacity: 1
       },
       to: {
-        translateY: spring(-40, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        translateY: -40,
+        opacity: 0
       }
     }
   },
@@ -165,8 +163,8 @@ const slideInRight = {
         opacity: 0
       },
       to: {
-        translateX: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        translateX: 0,
+        opacity: 1
       }
     },
     exit: {
@@ -175,8 +173,8 @@ const slideInRight = {
         opacity: 1
       },
       to: {
-        translateX: spring(40, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        translateX: 40,
+        opacity: 0
       }
     }
   },
@@ -195,8 +193,8 @@ const slideInBottom = {
         opacity: 0
       },
       to: {
-        translateY: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        translateY: 0,
+        opacity: 1
       }
     },
     exit: {
@@ -205,8 +203,8 @@ const slideInBottom = {
         opacity: 1
       },
       to: {
-        translateY: spring(40, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        translateY: 40,
+        opacity: 0
       }
     }
   },
@@ -225,8 +223,8 @@ const slideInLeft = {
         opacity: 0
       },
       to: {
-        translateX: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        translateX: 0,
+        opacity: 1
       }
     },
     exit: {
@@ -235,8 +233,8 @@ const slideInLeft = {
         opacity: 1
       },
       to: {
-        translateX: spring(-40, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        translateX: -40,
+        opacity: 0
       }
     }
   },
@@ -255,8 +253,8 @@ const rotateIn = {
         opacity: 0
       },
       to: {
-        rotate: spring(0, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(1, { ...presets.gentle, precision: 0.1 })
+        rotate: 0,
+        opacity: 1
       }
     },
     exit: {
@@ -265,8 +263,8 @@ const rotateIn = {
         opacity: 1
       },
       to: {
-        rotate: spring(180, { ...presets.gentle, precision: 0.1 }),
-        opacity: spring(0, { ...presets.gentle, precision: 0.1 })
+        rotate: 180,
+        opacity: 0
       }
     }
   },
@@ -276,7 +274,7 @@ const rotateIn = {
   })
 }
 
-const motion = {
+const preset = {
   fadeIn,
   fadeInScale,
   fall,
@@ -288,4 +286,5 @@ const motion = {
   rotateIn
 }
 
-export { motion }
+export { preset };
+

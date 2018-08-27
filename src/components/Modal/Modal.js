@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Motion } from 'react-motion'
-
-import { motion } from '../motion'
-
+import React, { Component } from 'react'
+import { Spring } from 'react-spring'
+import { preset } from '../preset'
 import './style.css'
 
 // Set document body as default parent
@@ -18,8 +16,12 @@ class Modal extends Component {
   static propTypes = {
     /** Whether to close modal on backdrop click event. */
     closeOnBackdropClick: PropTypes.bool,
-    /** Motion animation. */
-    motion: PropTypes.object,
+    /** Enable parent's scrollbar when modal is closed. */
+    enableScrollOnClose: PropTypes.bool,
+    /** Parent element. */
+    parent: PropTypes.instanceOf(Element),
+    /** Animation preset. */
+    preset: PropTypes.object,
     /** Modal close event listener callback. */
     onClose: PropTypes.func,
     /** Hide scrollbar of parent element (defaults to document's body). */
@@ -32,19 +34,21 @@ class Modal extends Component {
 
   static defaultProps = {
     closeOnBackdropClick: true,
+    enableScrollOnClose: true,
     hideScroll: true,
-    motion: motion.fadeIn,
+    parent: defaultParent,
+    preset: preset.fadeIn,
     showBackdrop: true,
     style: {}
   }
 
-  // Default backdrop motion
-  backdropMotion = motion.fadeIn
+  // Default backdrop animation
+  backdropAnimation = preset.fadeIn
 
   state = {
     renderComponent: true,
-    backdropMotion: this.backdropMotion.config.enter,
-    childMotion: this.props.motion.config.enter
+    backdropAnimation: this.backdropAnimation.config.enter,
+    childAnimation: this.props.preset.config.enter
   }
 
   /**
@@ -53,10 +57,7 @@ class Modal extends Component {
    * @memberof Modal
    */
   onClickBackdrop(e) {
-    if (
-      this.props.closeOnBackdropClick === true &&
-      e.target === this.container
-    ) {
+    if (this.props.closeOnBackdropClick === true) {
       this.onCloseModal()
     }
   }
@@ -68,13 +69,12 @@ class Modal extends Component {
   onCloseModal() {
     this.setState(
       {
-        backdropMotion: this.backdropMotion.config.exit,
-        childMotion: this.props.motion.config.exit
+        backdropAnimation: this.backdropAnimation.config.exit,
+        childAnimation: this.props.preset.config.exit
       },
       () => {
         // 700 ms is taken as a safe time limit
         // At few instances, this might trigger a no-op warning as we are trying to `setState` on an unmounted component in `unmountComponent` method.
-        // react-motion's `onRest` method is avoided as it is not guaranteed to be triggered in case user willingly clicks/taps the trigger button multiple times.
         setTimeout(() => {
           this.unmountComponent()
         }, 700)
@@ -92,7 +92,7 @@ class Modal extends Component {
     })
 
     // Before component unmount, add parent's scrollbar
-    if (this.props.hideScroll) {
+    if (this.props.enableScrollOnClose) {
       this.toggleScroll(false)
     }
 
@@ -110,13 +110,13 @@ class Modal extends Component {
    */
   getChildren(children) {
     const {
-      motion: { reducer: childReducer },
+      preset: { reducer: childReducer },
       style
     } = this.props
-    const { childMotion } = this.state
+    const { childAnimation } = this.state
 
     return (
-      <Motion defaultStyle={childMotion.from} style={childMotion.to}>
+      <Spring from={childAnimation.from} to={childAnimation.to}>
         {value => (
           <div
             className="modal__wrapper"
@@ -125,7 +125,7 @@ class Modal extends Component {
             {children(() => this.onCloseModal())}
           </div>
         )}
-      </Motion>
+      </Spring>
     )
   }
 
@@ -135,10 +135,12 @@ class Modal extends Component {
    * @memberof Dialog
    */
   toggleScroll(hideScroll) {
+    const { parent } = this.props
+
     // Show/hide scrollbar
     hideScroll
-      ? defaultParent.classList.add('hide-scroll')
-      : defaultParent.classList.remove('hide-scroll')
+      ? parent.classList.add('scroll--hide')
+      : parent.classList.remove('scroll--hide')
   }
 
   componentDidMount() {
@@ -149,16 +151,16 @@ class Modal extends Component {
   }
 
   componentWillUnmount() {
-    if (this.props.hideScroll) {
+    if (this.props.enableScrollOnClose) {
       // Show scrollbar
       this.toggleScroll(false)
     }
   }
 
   render() {
-    const { children, showBackdrop } = this.props
-    const { backdropMotion, renderComponent } = this.state
-    const { reducer: backdropReducer } = this.backdropMotion
+    const { children, parent, showBackdrop } = this.props
+    const { backdropAnimation, renderComponent } = this.state
+    const { reducer: backdropReducer } = this.backdropAnimation
 
     if (renderComponent === false) {
       return null
@@ -169,20 +171,25 @@ class Modal extends Component {
     }
 
     return (
-      <Motion defaultStyle={backdropMotion.from} style={backdropMotion.to}>
-        {value => (
-          <div
-            className="modal__container"
-            ref={container => {
-              this.container = container
-            }}
-            onClick={e => this.onClickBackdrop(e)}
-            style={backdropReducer(value)}
-          >
-            {this.getChildren(children)}
-          </div>
-        )}
-      </Motion>
+      <div
+        className="modal__container"
+        style={
+          parent !== defaultParent
+            ? { position: 'absolute', top: parent.scrollTop }
+            : {}
+        }
+      >
+        <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
+          {value => (
+            <div
+              className="backdrop"
+              onClick={e => this.onClickBackdrop(e)}
+              style={backdropReducer(value)}
+            />
+          )}
+        </Spring>
+        {this.getChildren(children)}
+      </div>
     )
   }
 }

@@ -11,8 +11,7 @@ Basic usage.
 Customize it using built-in props.
 
 ```jsx
-const { spring, presets } = require('react-motion')
-const { motion } = require('../')
+const { preset } = require('../preset')
 
 // Should be used to position modal on the surface
 const modalStyle = {
@@ -26,7 +25,8 @@ const modalStyle = {
 const style = {
   backgroundColor: '#fff',
   fontFamily: 'sans-serif',
-  padding: '16px'
+  padding: '16px',
+  height: '100%'
 }
 
 initialState = { showModal: false }
@@ -34,7 +34,7 @@ initialState = { showModal: false }
   <button onClick={() => setState({ showModal: true })}>Show Modal</button>
   {state.showModal && (
     <Modal
-      motion={motion.slideInBottom}
+      preset={preset.slideInBottom}
       onClose={() => setState({ showModal: false })}
       style={modalStyle}
     >

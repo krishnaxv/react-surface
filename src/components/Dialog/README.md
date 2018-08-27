@@ -11,8 +11,7 @@ Basic usage.
 Customize it using built-in props.
 
 ```jsx
-const { spring, presets } = require('react-motion')
-const { motion } = require('../')
+const { preset } = require('../preset')
 
 const style = {
   alignItems: 'center',
@@ -30,7 +29,7 @@ initialState = { showDialog: false }
   <button onClick={() => setState({ showDialog: true })}>Show Dialog</button>
   {state.showDialog && (
     <Dialog
-      motion={motion.fadeIn}
+      preset={preset.fadeIn}
       onClose={() => setState({ showDialog: false })}
     >
       {onCloseDialog => <div style={style}>Dialog</div>}

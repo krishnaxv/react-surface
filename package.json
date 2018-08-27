@@ -7,9 +7,7 @@
   "browser": "dist/react-surface.umd.js",
   "author": "krishnaxv",
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dist": "rollup -c",
     "prettier": "prettier --write 'src/**/*.js'",
@@ -32,9 +30,8 @@
     "file-loader": "^1.1.11",
     "prettier": "^1.12.1",
     "prop-types": "^15.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-motion": "^0.5.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "react-styleguidist": "^7.0.8",
     "rollup": "^0.58.1",
     "rollup-plugin-babel": "^3.0.4",
@@ -44,10 +41,11 @@
     "rollup-plugin-uglify": "^3.0.0",
     "webpack": "^4.6.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react-spring": "^5.6.9"
+  },
   "peerDependencies": {
     "react": ">=16",
-    "react-dom": ">=16",
-    "react-motion": "^0.5"
+    "react-dom": ">=16"
   }
 }
