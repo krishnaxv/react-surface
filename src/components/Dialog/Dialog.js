@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { Spring } from 'react-spring'
 import { preset } from '../preset'
 import './style.css'
@@ -17,7 +18,7 @@ class Dialog extends Component {
   static propTypes = {
     /** Close dialog on backdrop click event. */
     closeOnBackdropClick: PropTypes.bool,
-    /** Enable parent's scrollbar when dialog is closed */
+    /** Enable parent's scrollbar when dialog is closed. */
     enableScrollOnClose: PropTypes.bool,
     /** Parent element. */
     parent: PropTypes.instanceOf(Element),
@@ -122,6 +123,28 @@ class Dialog extends Component {
   }
 
   /**
+   * Get backdrop
+   * @returns Component
+   * @memberof Dialog
+   */
+  getBackdrop() {
+    const { backdropAnimation } = this.state
+    const { reducer: backdropReducer } = this.backdropAnimation
+
+    return (
+      <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
+        {value => (
+          <div
+            className="backdrop"
+            onClick={e => this.onClickBackdrop(e)}
+            style={backdropReducer(value)}
+          />
+        )}
+      </Spring>
+    )
+  }
+
+  /**
    * Toggle parent's scrollbar
    * @param {boolean} hideScroll Hide scrollbar
    * @memberof Dialog
@@ -149,14 +172,13 @@ class Dialog extends Component {
 
   render() {
     const { children, parent } = this.props
-    const { backdropAnimation, renderComponent } = this.state
-    const { reducer: backdropReducer } = this.backdropAnimation
+    const { renderComponent } = this.state
 
     if (renderComponent === false) {
       return null
     }
 
-    return (
+    return ReactDOM.createPortal(
       <div
         className="dialog__container"
         style={
@@ -165,17 +187,10 @@ class Dialog extends Component {
             : {}
         }
       >
-        <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
-          {value => (
-            <div
-              className="backdrop"
-              onClick={e => this.onClickBackdrop(e)}
-              style={backdropReducer(value)}
-            />
-          )}
-        </Spring>
+        {this.getBackdrop()}
         {this.getChildren(children)}
-      </div>
+      </div>,
+      parent
     )
   }
 }

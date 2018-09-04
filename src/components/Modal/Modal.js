@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { Spring } from 'react-spring'
 import { preset } from '../preset'
 import './style.css'
@@ -130,6 +131,28 @@ class Modal extends Component {
   }
 
   /**
+   * Get backdrop
+   * @returns Component
+   * @memberof Modal
+   */
+  getBackdrop() {
+    const { backdropAnimation } = this.state
+    const { reducer: backdropReducer } = this.backdropAnimation
+
+    return (
+      <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
+        {value => (
+          <div
+            className="backdrop"
+            onClick={e => this.onClickBackdrop(e)}
+            style={backdropReducer(value)}
+          />
+        )}
+      </Spring>
+    )
+  }
+
+  /**
    * Toggle parent's scrollbar
    * @param {boolean} hideScroll Hide scrollbar
    * @memberof Dialog
@@ -159,37 +182,29 @@ class Modal extends Component {
 
   render() {
     const { children, parent, showBackdrop } = this.props
-    const { backdropAnimation, renderComponent } = this.state
-    const { reducer: backdropReducer } = this.backdropAnimation
+    const { renderComponent } = this.state
 
     if (renderComponent === false) {
       return null
     }
 
-    if (showBackdrop === false) {
-      return this.getChildren(children)
-    }
-
-    return (
-      <div
-        className="modal__container"
-        style={
-          parent !== defaultParent
-            ? { position: 'absolute', top: parent.scrollTop }
-            : {}
-        }
-      >
-        <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
-          {value => (
-            <div
-              className="backdrop"
-              onClick={e => this.onClickBackdrop(e)}
-              style={backdropReducer(value)}
-            />
-          )}
-        </Spring>
-        {this.getChildren(children)}
-      </div>
+    return ReactDOM.createPortal(
+      showBackdrop === false ? (
+        this.getChildren(children)
+      ) : (
+        <div
+          className="modal__container"
+          style={
+            parent !== defaultParent
+              ? { position: 'absolute', top: parent.scrollTop }
+              : {}
+          }
+        >
+          {this.getBackdrop()}
+          {this.getChildren(children)}
+        </div>
+      ),
+      parent
     )
   }
 }
