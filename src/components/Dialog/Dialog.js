@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Spring } from 'react-spring'
+import { Transition } from 'react-spring'
+import { Backdrop } from '../Backdrop'
 import { preset } from '../preset'
 import './style.css'
 
@@ -38,13 +39,12 @@ class Dialog extends Component {
     preset: preset.fadeIn
   }
 
-  // Default backdrop animation
-  backdropAnimation = preset.fadeIn
+  // Child animation
+  childAnimation = this.props.preset
 
   state = {
-    renderComponent: true,
-    backdropAnimation: this.backdropAnimation.config.enter,
-    childAnimation: this.props.preset.config.enter
+    open: true,
+    renderComponent: true
   }
 
   /**
@@ -52,7 +52,7 @@ class Dialog extends Component {
    * @param {Object} e Event
    * @memberof Dialog
    */
-  onClickBackdrop(e) {
+  handleBackdropClick = e => {
     if (this.props.closeOnBackdropClick === true) {
       this.onCloseDialog()
     }
@@ -62,19 +62,16 @@ class Dialog extends Component {
    * Close dialog
    * @memberof Dialog
    */
-  onCloseDialog() {
+  onCloseDialog = () => {
     // Close dialog
     this.setState(
       {
-        backdropAnimation: this.backdropAnimation.config.exit,
-        childAnimation: this.props.preset.config.exit
+        open: false
       },
       () => {
         // 700 ms is taken as a safe time limit
         // At few instances, this might trigger a no-op warning as we are trying to `setState` on an unmounted component in `unmountComponent` method.
-        setTimeout(() => {
-          this.unmountComponent()
-        }, 700)
+        setTimeout(this.unmountComponent, 700)
       }
     )
   }
@@ -83,7 +80,7 @@ class Dialog extends Component {
    * Unmount component
    * @memberof Dialog
    */
-  unmountComponent() {
+  unmountComponent = () => {
     this.setState({
       renderComponent: false
     })
@@ -105,42 +102,21 @@ class Dialog extends Component {
    * @returns Component
    * @memberof Dialog
    */
-  getChildren(children) {
+  getChildren = children => {
     const {
-      preset: { reducer: childReducer }
-    } = this.props
-    const { childAnimation } = this.state
+      config: { from, to },
+      reducer: childReducer
+    } = this.childAnimation
 
     return (
-      <Spring from={childAnimation.from} to={childAnimation.to}>
-        {value => (
-          <div className="dialog__wrapper" style={childReducer(value)}>
-            {children(() => this.onCloseDialog())}
-          </div>
-        )}
-      </Spring>
-    )
-  }
-
-  /**
-   * Get backdrop
-   * @returns Component
-   * @memberof Dialog
-   */
-  getBackdrop() {
-    const { backdropAnimation } = this.state
-    const { reducer: backdropReducer } = this.backdropAnimation
-
-    return (
-      <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
-        {value => (
-          <div
-            className="backdrop"
-            onClick={e => this.onClickBackdrop(e)}
-            style={backdropReducer(value)}
-          />
-        )}
-      </Spring>
+      <Transition from={from} enter={to} leave={from}>
+        {this.state.open &&
+          (value => (
+            <div className="dialog__wrapper" style={childReducer(value)}>
+              {children(this.onCloseDialog)}
+            </div>
+          ))}
+      </Transition>
     )
   }
 
@@ -149,7 +125,7 @@ class Dialog extends Component {
    * @param {boolean} hideScroll Hide scrollbar
    * @memberof Dialog
    */
-  toggleScroll(hideScroll) {
+  toggleScroll = hideScroll => {
     // Show/hide scrollbar
     hideScroll
       ? this.props.parent.classList.add('scroll--hide')
@@ -163,16 +139,9 @@ class Dialog extends Component {
     }
   }
 
-  componentWillUnmount() {
-    if (this.props.enableScrollOnClose) {
-      // Show scrollbar
-      this.toggleScroll(false)
-    }
-  }
-
   render() {
     const { children, parent } = this.props
-    const { renderComponent } = this.state
+    const { open, renderComponent } = this.state
 
     if (renderComponent === false) {
       return null
@@ -187,7 +156,7 @@ class Dialog extends Component {
             : {}
         }
       >
-        {this.getBackdrop()}
+        <Backdrop open={open} onClick={this.handleBackdropClick} />
         {this.getChildren(children)}
       </div>,
       parent

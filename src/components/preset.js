@@ -1,21 +1,11 @@
 // Fade In motion
 const fadeIn = {
   config: {
-    enter: {
-      from: {
-        opacity: 0
-      },
-      to: {
-        opacity: 1
-      }
+    from: {
+      opacity: 0
     },
-    exit: {
-      from: {
-        opacity: 1
-      },
-      to: {
-        opacity: 0
-      }
+    to: {
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -26,25 +16,13 @@ const fadeIn = {
 // Fade In Scale motion
 const fadeInScale = {
   config: {
-    enter: {
-      from: {
-        scale: 0.5,
-        opacity: 0.5
-      },
-      to: {
-        scale: 1,
-        opacity: 1
-      }
+    from: {
+      scale: 0.5,
+      opacity: 0.5
     },
-    exit: {
-      from: {
-        scale: 1,
-        opacity: 1
-      },
-      to: {
-        scale: 0,
-        opacity: 0
-      }
+    to: {
+      scale: 1,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -56,25 +34,13 @@ const fadeInScale = {
 // Fall motion
 const fall = {
   config: {
-    enter: {
-      from: {
-        scale: 1.5,
-        opacity: 0
-      },
-      to: {
-        scale: 1,
-        opacity: 1
-      }
+    from: {
+      scale: 1.5,
+      opacity: 0
     },
-    exit: {
-      from: {
-        scale: 1,
-        opacity: 1
-      },
-      to: {
-        scale: 1.5,
-        opacity: 0
-      }
+    to: {
+      scale: 1,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -86,40 +52,24 @@ const fall = {
 // Side Fall motion
 const sideFall = {
   config: {
-    enter: {
-      from: {
-        translate: 60,
-        translateZ: 300,
-        rotate: 45,
-        opacity: 0
-      },
-      to: {
-        translate: 0,
-        translateZ: 0,
-        rotate: 0,
-        opacity: 1
-      }
+    from: {
+      translate: 60,
+      translateZ: 300,
+      rotate: 45,
+      opacity: 0
     },
-    exit: {
-      from: {
-        translate: 0,
-        translateZ: 0,
-        rotate: 0,
-        opacity: 1
-      },
-      to: {
-        translate: 60,
-        translateZ: 300,
-        rotate: 45,
-        opacity: 0
-      }
+    to: {
+      translate: 0,
+      translateZ: 0,
+      rotate: 0,
+      opacity: 1
     }
   },
   reducer: value => ({
     transformStyle: 'preserve-3d',
     transform: `translate(${value.translate}%) translateZ(${
       value.translateZ
-      }px) rotate(${value.rotate}deg)`,
+    }px) rotate(${value.rotate}deg)`,
     opacity: value.opacity
   })
 }
@@ -127,25 +77,13 @@ const sideFall = {
 // Slide In Top motion
 const slideInTop = {
   config: {
-    enter: {
-      from: {
-        translateY: -40,
-        opacity: 0
-      },
-      to: {
-        translateY: 0,
-        opacity: 1
-      }
+    from: {
+      translateY: -40,
+      opacity: 0
     },
-    exit: {
-      from: {
-        translateY: 0,
-        opacity: 1
-      },
-      to: {
-        translateY: -40,
-        opacity: 0
-      }
+    to: {
+      translateY: 0,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -157,25 +95,13 @@ const slideInTop = {
 // Slide in Right motion
 const slideInRight = {
   config: {
-    enter: {
-      from: {
-        translateX: 40,
-        opacity: 0
-      },
-      to: {
-        translateX: 0,
-        opacity: 1
-      }
+    from: {
+      translateX: 40,
+      opacity: 0
     },
-    exit: {
-      from: {
-        translateX: 0,
-        opacity: 1
-      },
-      to: {
-        translateX: 40,
-        opacity: 0
-      }
+    to: {
+      translateX: 0,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -187,25 +113,13 @@ const slideInRight = {
 // Slide In Bottom motion
 const slideInBottom = {
   config: {
-    enter: {
-      from: {
-        translateY: 40,
-        opacity: 0
-      },
-      to: {
-        translateY: 0,
-        opacity: 1
-      }
+    from: {
+      translateY: 40,
+      opacity: 0
     },
-    exit: {
-      from: {
-        translateY: 0,
-        opacity: 1
-      },
-      to: {
-        translateY: 40,
-        opacity: 0
-      }
+    to: {
+      translateY: 0,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -217,25 +131,13 @@ const slideInBottom = {
 // Slide In Left motion
 const slideInLeft = {
   config: {
-    enter: {
-      from: {
-        translateX: -40,
-        opacity: 0
-      },
-      to: {
-        translateX: 0,
-        opacity: 1
-      }
+    from: {
+      translateX: -40,
+      opacity: 0
     },
-    exit: {
-      from: {
-        translateX: 0,
-        opacity: 1
-      },
-      to: {
-        translateX: -40,
-        opacity: 0
-      }
+    to: {
+      translateX: 0,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -247,25 +149,13 @@ const slideInLeft = {
 // Rotate In motion
 const rotateIn = {
   config: {
-    enter: {
-      from: {
-        rotate: 180,
-        opacity: 0
-      },
-      to: {
-        rotate: 0,
-        opacity: 1
-      }
+    from: {
+      rotate: 180,
+      opacity: 0
     },
-    exit: {
-      from: {
-        rotate: 0,
-        opacity: 1
-      },
-      to: {
-        rotate: 180,
-        opacity: 0
-      }
+    to: {
+      rotate: 0,
+      opacity: 1
     }
   },
   reducer: value => ({
@@ -286,5 +176,4 @@ const preset = {
   rotateIn
 }
 
-export { preset };
-
+export { preset }

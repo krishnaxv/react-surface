@@ -1,30 +1,41 @@
 import React, { Component } from 'react'
-import { Spring } from 'react-spring'
+import { Transition } from 'react-spring'
 import { preset } from '../preset'
 
 class Backdrop extends Component {
   // Default backdrop animation
   backdropAnimation = preset.fadeIn
 
-  state = {
-    backdropAnimation: this.backdropAnimation.config.enter
-  }
-
   render() {
-    const { backdropAnimation } = this.state
-    const { reducer: backdropReducer } = this.backdropAnimation
+    const {
+      config: { from, to },
+      reducer: backdropReducer
+    } = this.backdropAnimation
 
     return (
-      <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
-        {value => (
-          <div
-            className="backdrop"
-            onClick={e => this.onClickBackdrop(e)}
-            style={backdropReducer(value)}
-          />
-        )}
-      </Spring>
+      <Transition from={from} enter={to} leave={from}>
+        {this.props.open &&
+          (value => (
+            <div
+              className="backdrop"
+              onClick={this.handleClick}
+              style={backdropReducer(value)}
+            />
+          ))}
+      </Transition>
     )
+  }
+
+  /**
+   * Backdrop click event
+   * @param {Object} e Event
+   * @memberof Backdrop
+   */
+  handleClick = e => {
+    this.setState({
+      open: false
+    })
+    this.props.onClick()
   }
 }
 

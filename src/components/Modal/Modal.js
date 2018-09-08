@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Spring } from 'react-spring'
+import { Transition } from 'react-spring'
+import { Backdrop } from '../Backdrop'
 import { preset } from '../preset'
 import './style.css'
 
@@ -43,13 +44,12 @@ class Modal extends Component {
     style: {}
   }
 
-  // Default backdrop animation
-  backdropAnimation = preset.fadeIn
+  // Child animation
+  childAnimation = this.props.preset
 
   state = {
-    renderComponent: true,
-    backdropAnimation: this.backdropAnimation.config.enter,
-    childAnimation: this.props.preset.config.enter
+    open: true,
+    renderComponent: true
   }
 
   /**
@@ -57,7 +57,7 @@ class Modal extends Component {
    * @param {Object} e Event
    * @memberof Modal
    */
-  onClickBackdrop(e) {
+  handleBackdropClick = e => {
     if (this.props.closeOnBackdropClick === true) {
       this.onCloseModal()
     }
@@ -67,27 +67,24 @@ class Modal extends Component {
    * Close modal
    * @memberof Modal
    */
-  onCloseModal() {
+  onCloseModal = () => {
     this.setState(
       {
-        backdropAnimation: this.backdropAnimation.config.exit,
-        childAnimation: this.props.preset.config.exit
+        open: false
       },
       () => {
         // 700 ms is taken as a safe time limit
         // At few instances, this might trigger a no-op warning as we are trying to `setState` on an unmounted component in `unmountComponent` method.
-        setTimeout(() => {
-          this.unmountComponent()
-        }, 700)
+        setTimeout(this.unmountComponent, 700)
       }
     )
   }
 
   /**
    * Unmount component
-   * @memberof Modal
+   * @memberof Dialog
    */
-  unmountComponent() {
+  unmountComponent = () => {
     this.setState({
       renderComponent: false
     })
@@ -109,46 +106,26 @@ class Modal extends Component {
    * @returns Component
    * @memberof Modal
    */
-  getChildren(children) {
+  getChildren = children => {
+    const { style } = this.props
+    const { open } = this.state
     const {
-      preset: { reducer: childReducer },
-      style
-    } = this.props
-    const { childAnimation } = this.state
+      config: { from, to },
+      reducer: childReducer
+    } = this.childAnimation
 
     return (
-      <Spring from={childAnimation.from} to={childAnimation.to}>
-        {value => (
-          <div
-            className="modal__wrapper"
-            style={{ ...style, ...childReducer(value) }}
-          >
-            {children(() => this.onCloseModal())}
-          </div>
-        )}
-      </Spring>
-    )
-  }
-
-  /**
-   * Get backdrop
-   * @returns Component
-   * @memberof Modal
-   */
-  getBackdrop() {
-    const { backdropAnimation } = this.state
-    const { reducer: backdropReducer } = this.backdropAnimation
-
-    return (
-      <Spring from={backdropAnimation.from} to={backdropAnimation.to}>
-        {value => (
-          <div
-            className="backdrop"
-            onClick={e => this.onClickBackdrop(e)}
-            style={backdropReducer(value)}
-          />
-        )}
-      </Spring>
+      <Transition from={from} enter={to} leave={from}>
+        {open &&
+          (value => (
+            <div
+              className="modal__wrapper"
+              style={{ ...style, ...childReducer(value) }}
+            >
+              {children(this.onCloseModal)}
+            </div>
+          ))}
+      </Transition>
     )
   }
 
@@ -157,7 +134,7 @@ class Modal extends Component {
    * @param {boolean} hideScroll Hide scrollbar
    * @memberof Dialog
    */
-  toggleScroll(hideScroll) {
+  toggleScroll = hideScroll => {
     const { parent } = this.props
 
     // Show/hide scrollbar
@@ -173,16 +150,9 @@ class Modal extends Component {
     }
   }
 
-  componentWillUnmount() {
-    if (this.props.enableScrollOnClose) {
-      // Show scrollbar
-      this.toggleScroll(false)
-    }
-  }
-
   render() {
     const { children, parent, showBackdrop } = this.props
-    const { renderComponent } = this.state
+    const { open, renderComponent } = this.state
 
     if (renderComponent === false) {
       return null
@@ -200,7 +170,7 @@ class Modal extends Component {
               : {}
           }
         >
-          {this.getBackdrop()}
+          <Backdrop open={open} onClick={this.handleBackdropClick} />
           {this.getChildren(children)}
         </div>
       ),
